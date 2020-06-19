@@ -30,13 +30,46 @@ class Controller (ttk.Frame):
         self.searcher=Searcher(self, self.busca)
         self.searcher.grid(column=0, row=0)
 
+        self.film = Film (self)
+        self.film.grid(column=0, row=1)
+
     def busca(self, peli):
         print (peli)
 
         url=URL.format(peli, APIKEY)
         results = requests.get(url)
 
+        if results.status_code==200:
+            films=results.json() # Convirtiendo cadena en diccionario segun la sintaxis del modulo requests
+            if films.get('Response')=='True':
+                first_film=films.get('Search')[0]
+                mi_peli = {'titulo': first_film.get('Title'), 'año': first_film.get ('Year'), 'poster': first_film.get('Poster')}
+                self.film.encontrada = mi_peli
+        else:
+            pass
+
         print (results.text)
 
+class Film (ttk.Frame):
+    __encontrada = None
+   
+    def __init__(self, parent):
+        ttk.Frame.__init__(self, parent)
+
+        self.lblTitle = ttk.Label(self, text='Titulo')
+        self.lblYear = ttk.Label(self, text = '1900')
+
+        self.lblTitle.pack(side=TOP)
+        self.lblYear.pack(side=TOP)
        
+    @property
+    def encontrada (self):
+        return self.__encontrada
+
+    @encontrada.setter
+    def encontrada (self, value):
+        self.__encontrada = value
+
+        self.lblTitle.config(text=self.__encontrada.get ('titulo'))
+        self.lblYear.config(text=self.__encontrada.get ('año'))
 
