@@ -1,9 +1,13 @@
 from tkinter import *
 from tkinter import ttk
+from configparser import * # LIbreria para procesar los config.ini con python
 
 import requests
 
-APIKEY = 'facf808d'
+config=ConfigParser() # Instanciando ConfigParser
+config.read('config.ini') # Abriendo nuestro fichero config.ini
+APIKEY = config['OMDB_API']['APIKEY'] # Leyendo la apikey que se encuentra guardada en el fichero config.ini
+
 URL = 'http://www.omdbapi.com/?s={}&apikey={}'
 
 class Searcher (ttk.Frame):

@@ -2,7 +2,7 @@
 
 Partiendo de la API de IMDB buscamos la primera pelicula que coincide con nuestra pantalla
 
-# Instalacion
+## Instalacion
 
 1. Instalar dependencias
 ```
@@ -14,7 +14,7 @@ IMDB API necesita una apikey para las consultas
 
 Informa el fichero `config_template.ini` y renombralo `config.ini`
 
-# Ejecutar
+## Ejecutar
 ```
 python main.py
 ```
