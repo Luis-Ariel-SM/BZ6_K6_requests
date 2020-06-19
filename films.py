@@ -4,6 +4,9 @@ from configparser import * # LIbreria para procesar los config.ini con python
 
 import requests
 
+from PIL import Image, ImageTk
+from io import BytesIO
+
 config=ConfigParser() # Instanciando ConfigParser
 config.read('config.ini') # Abriendo nuestro fichero config.ini
 APIKEY = config['OMDB_API']['APIKEY'] # Leyendo la apikey que se encuentra guardada en el fichero config.ini
@@ -28,7 +31,7 @@ class Searcher (ttk.Frame):
 
 class Controller (ttk.Frame):
     def __init__(self, parent):
-        ttk.Frame.__init__(self, parent, width=300, height=400)
+        ttk.Frame.__init__(self, parent, width=305, height=550)
         self.grid_propagate(False)
 
         self.searcher=Searcher(self, self.busca)
@@ -62,7 +65,10 @@ class Film (ttk.Frame):
 
         self.lblTitle = ttk.Label(self, text='Titulo')
         self.lblYear = ttk.Label(self, text = '1900')
+        self.image = Label(self)
+        self.photo = None
 
+        self.image.pack (side=TOP)
         self.lblTitle.pack(side=TOP)
         self.lblYear.pack(side=TOP)
        
@@ -76,4 +82,15 @@ class Film (ttk.Frame):
 
         self.lblTitle.config(text=self.__encontrada.get ('titulo'))
         self.lblYear.config(text=self.__encontrada.get ('año'))
+
+        if self.__encontrada.get('poster')=='N/A':
+            return
+        r = requests.get (self.__encontrada.get('poster')) # Recupero la imagen de internet
+        if r.status_code == 200:
+            bin_image = r.content # Transformando la imagen en binario segun metodo del modulo requests (Aun python no lo entiende)
+            image = Image.open(BytesIO(bin_image)) # Sintaxis para que Python entienda los binarios de imagenes o musica utilizando los modulos especificos para esto
+            self.photo = ImageTk.PhotoImage(image) # Tranformando la imagen para que ahora la entienda tkinter 
+
+            self.image.config(image=self.photo)
+            self.image.image = self.photo
 
