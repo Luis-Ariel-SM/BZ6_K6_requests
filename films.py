@@ -32,7 +32,7 @@ class Searcher (ttk.Frame):
 class Controller (ttk.Frame):
     def __init__(self, parent):
         ttk.Frame.__init__(self, parent, width=305, height=550)
-        self.grid_propagate(False)
+        self.grid_propagate(False) # Si le pones un True la pantalla adopta el tamaños automatico de lo que tenga, es una buena opcion igual
 
         self.searcher=Searcher(self, self.busca)
         self.searcher.grid(column=0, row=0)
