@@ -25,7 +25,7 @@ littleutils==0.2.2
 MarkupSafe==1.1.1
 mccabe==0.6.1
 outdated==0.2.0
-Pillow==7.1.2
+Pillow==8.1.1
 pylint==2.4.4
 python-dotenv==0.13.0
 requests==2.23.0
